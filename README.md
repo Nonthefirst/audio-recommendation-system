@@ -1,6 +1,22 @@
 # Audio Recommendation System
-This repository contains an end-to-end audio-based music recommendation system built with Streamlit, PyTorch, and Librosa. The system extracts deep audio embeddings using a contrastive-learning CNN encoder, compares them against a large library of precomputed embeddings, and returns the most similar songs based on cosine similarity.  
+This repository contains an end-to-end audio-based music recommendation system built with Streamlit, PyTorch, and Librosa. The system extracts deep audio embeddings using a contrastive-learning CNN encoder, compares them against a large library of precomputed embeddings, and returns the most similar songs based on cosine similarity. 
 
+```bash
+audio-recommendation-system/
+├── main.py                  # Streamlit application entry point
+├── my_functions.py          # Custom models and functions definition
+├── README.md                # Project documentation
+├── LICENSE                  # Open-source license
+├── .gitignore               # Git ignore configuration
+│
+└── data/                    # Data and model directory
+    ├── music/               # Audio data and precomputed assets
+    │   ├── best_contrastive_temp002.zip        # Split-compressed model checkpoint (must be extracted to .pth)
+    │   ├── embeddings_contrastive002.npy       # Precomputed audio embeddings for similarity search
+    │   └── fma_metadata_clean_CNN.csv          # Cleaned FMA metadata (track IDs, titles, artists, etc.)
+    │
+    └── ...
+```
 # Quick Start
 
 ## 1. Unzip
