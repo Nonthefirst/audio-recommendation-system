@@ -1,4 +1,4 @@
-# audio-recommendation-system
+# Audio Recommendation System
 This repository contains an end-to-end audio-based music recommendation system built with Streamlit, PyTorch, and Librosa. The system extracts deep audio embeddings using a contrastive-learning CNN encoder, compares them against a large library of precomputed embeddings, and returns the most similar songs based on cosine similarity.  
 
 # Quick Start
@@ -68,4 +68,16 @@ Once all dependencies are installed and the model is extracted, launch the Strea
 streamctl run main.py
 ```
 
+## Acknowledgements
+
+This project builds upon publicly available resources and research code:
+
+- Audio embeddings were trained using the **FMA-small** dataset from the [Free Music Archive (FMA)](https://github.com/mdeff/fma), a large open dataset for music information retrieval research.
+- The neural network architecture `Cnn14_emb64_Spec` is adapted from the **PANNs (Pretrained Audio Neural Networks)** framework originally developed by Kong et al. and released in the repository [audioset_tagging_cnn](https://github.com/qiuqiangkong/audioset_tagging_cnn).
+
+We gratefully acknowledge the authors of these projects for making their data and code openly available. If you use this work, please also cite the original publications:
+
+> Defferrard, M., Benzi, K., Vandergheynst, P., & Bresson, X. (2017, September 5). FMA: A dataset for Music Analysis. arXiv.org. https://arxiv.org/abs/1612.01840 
+
+> Kong, Q., Cao, Y., Iqbal, T., Wang, Y., Wang, W., & Plumbley, M. D. (2020, August 23). Panns: Large-scale pretrained audio neural networks for audio pattern recognition. arXiv.org. https://arxiv.org/abs/1912.10211 
 
