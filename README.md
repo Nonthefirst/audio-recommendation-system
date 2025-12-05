@@ -44,7 +44,6 @@ unzip best_contrastive_temp002.zip
 ## 2. Dependences
 This project relies on the following Python packages. We recommend using a virtual environment (e.g., venv or conda) to avoid conflicts.
 
-
 ### Required Packages
 
 | Package        | Purpose |
@@ -59,4 +58,14 @@ This project relies on the following Python packages. We recommend using a virtu
 | `os`           | File system operations (built-in) |
 
 > 🔸 `my_functions.py` is a local module in your project that defines the `Cnn14_emb64_Spec` model architecture. Ensure it’s in the same directory as your main script.
+
+
+## 3. Run the App
+
+Once all dependencies are installed and the model is extracted, launch the Streamlit application:
+
+```bash
+streamctl run main.py
+```
+
 
