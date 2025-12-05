@@ -21,7 +21,7 @@ data/
 3. Select "Extract here" or "Extract to…".
 
 ### Macs
-1. Download [KeKa](https://www.keka.io/en/), then unzip "data/best_contrastive_temp002.zip"
+1. Download [KeKa](https://www.keka.io/en/).
 2. Open Keka, then drag best_contrastive_temp002.zip into the Keka window.
 3. Extraction will begin automatically—Keka handles all split parts seamlessly.
 
