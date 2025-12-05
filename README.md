@@ -81,8 +81,10 @@ This project relies on the following Python packages. We recommend using a virtu
 Once all dependencies are installed and the model is extracted, launch the Streamlit application:
 
 ```bash
-streamctl run main.py
+streamlit run main.py
 ```
+
+You can view [Streamlit documentations](https://docs.streamlit.io/) for any error.
 
 # Acknowledgements
 
