@@ -83,8 +83,42 @@ Once all dependencies are installed and the model is extracted, launch the Strea
 ```bash
 streamlit run main.py
 ```
-
 You can view [Streamlit documentations](https://docs.streamlit.io/) for any error.
+
+## 4. How to Use the App
+
+Once the app is running (`streamlit run main.py`), you'll see a clean interface in your browser. Here's how to get music recommendations:
+
+### 1. Choose Your Input Method
+You can either:
+- **Upload your own audio file** (supports `.wav`, `.mp3`, `.flac`)
+- **Select a sample song** from our built-in demo library (located in `data/music/`)
+
+> Note: Uploaded audio will be automatically trimmed or padded to **30 seconds** for consistent feature extraction.
+
+### 2. Adjust Recommendation Settings (Optional)
+Use the **sidebar** to control how many recommendations you want:
+- Slider: **Number of recommendations** (5–20, default: 10)
+
+### 3. Get Recommendations
+Click the **Get Recommendations** button to:
+- Extract deep audio features using our contrastive-learning CNN
+- Compare against a precomputed library of song embeddings
+- Fetch the most acoustically similar tracks using **cosine similarity**
+
+### 4. View & Export Results
+After processing, you’ll see:
+- A ranked list of recommended songs with **title, artist, genre, and similarity score**
+- An **interactive detail view** for each recommendation (via expandable cards)
+- Options to:
+  - **Visualize** your audio’s 64-dimensional embedding
+  - **Download** the embedding as a JSON file for further analysis
+
+### Tips
+- If no recommendations appear, ensure all data files (`embeddings_contrastive002.npy`, `fma_metadata_clean_CNN.csv`, and sample songs) are in the correct directories.
+- For best results, use audio clips with clear musical content (avoid silence or heavy noise).
+
+Enjoy discovering new music through sound—not just metadata!
 
 # Acknowledgements
 
