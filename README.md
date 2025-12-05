@@ -68,7 +68,7 @@ Once all dependencies are installed and the model is extracted, launch the Strea
 streamctl run main.py
 ```
 
-## Acknowledgements
+# Acknowledgements
 
 This project builds upon publicly available resources and research code:
 
