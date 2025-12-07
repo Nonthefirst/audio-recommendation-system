@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import pandas as pd
 import os
@@ -295,111 +293,110 @@ if st.button("🔍 Get Recommendations", type="primary", disabled=not process_en
                     )
                 
                 st.session_state['recommendations'] = recommendations
-                st.session_state['recommendations'] = recommendations
     
-    # Display results if they exist in session state
-    if 'recommendations' in st.session_state and st.session_state['recommendations']:
-        recommendations = st.session_state['recommendations']
-        query_embedding = st.session_state.get('query_embedding')
-        audio_filename = st.session_state.get('audio_filename', 'uploaded_audio')
+# Display results if they exist in session state
+if 'recommendations' in st.session_state and st.session_state['recommendations']:
+    recommendations = st.session_state['recommendations']
+    query_embedding = st.session_state.get('query_embedding')
+    audio_filename = st.session_state.get('audio_filename', 'uploaded_audio')
+    
+    # Embedding visualization and download section
+    st.markdown("---")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("📊 View Embedding Vector", use_container_width=True):
+            st.session_state['show_embedding'] = not st.session_state.get('show_embedding', False)
+    
+    with col2:
+        # Prepare embedding dict for download
+        embedding_dict = {
+            'filename': audio_filename,
+            'embedding': query_embedding.tolist(),
+            'embedding_dim': len(query_embedding),
+            'timestamp': pd.Timestamp.now().isoformat()
+        }
         
-        # Embedding visualization and download section
-        st.markdown("---")
-        col1, col2 = st.columns(2)
+        # Convert to JSON string for download
+        import json
+        json_str = json.dumps(embedding_dict, indent=2)
         
-        with col1:
-            if st.button("📊 View Embedding Vector", use_container_width=True):
-                st.session_state['show_embedding'] = not st.session_state.get('show_embedding', False)
+        st.download_button(
+            label="⬇️ Download Embedding",
+            data=json_str,
+            file_name=f"embedding_{audio_filename.split('.')[0]}.json",
+            mime="application/json",
+            use_container_width=True
+        )
+    
+    # Show embedding if button is clicked
+    if st.session_state.get('show_embedding', False):
+        st.subheader("🔢 Audio Embedding Vector")
         
-        with col2:
-            # Prepare embedding dict for download
-            embedding_dict = {
-                'filename': audio_filename,
-                'embedding': query_embedding.tolist(),
-                'embedding_dim': len(query_embedding),
-                'timestamp': pd.Timestamp.now().isoformat()
-            }
-            
-            # Convert to JSON string for download
-            import json
-            json_str = json.dumps(embedding_dict, indent=2)
-            
-            st.download_button(
-                label="⬇️ Download Embedding",
-                data=json_str,
-                file_name=f"embedding_{audio_filename.split('.')[0]}.json",
-                mime="application/json",
-                use_container_width=True
-            )
+        # Create tabs for different views
+        tab1, tab2, tab3 = st.tabs(["📈 Visualization", "📋 Raw Values", "📊 Statistics"])
         
-        # Show embedding if button is clicked
-        if st.session_state.get('show_embedding', False):
-            st.subheader("🔢 Audio Embedding Vector")
+        with tab1:
+            # Bar chart visualization
+            import matplotlib.pyplot as plt
             
-            # Create tabs for different views
-            tab1, tab2, tab3 = st.tabs(["📈 Visualization", "📋 Raw Values", "📊 Statistics"])
-            
-            with tab1:
-                # Bar chart visualization
-                import matplotlib.pyplot as plt
-                
-                fig, ax = plt.subplots(figsize=(12, 4))
-                ax.bar(range(len(query_embedding)), query_embedding, color='steelblue', alpha=0.7)
-                ax.set_xlabel('Dimension')
-                ax.set_ylabel('Value')
-                ax.set_title(f'Embedding Vector Visualization (64D)')
-                ax.grid(True, alpha=0.3)
-                st.pyplot(fig)
-            
-            with tab2:
-                # Display as dataframe
-                emb_df = pd.DataFrame({
-                    'Dimension': range(len(query_embedding)),
-                    'Value': query_embedding
-                })
-                st.dataframe(emb_df, use_container_width=True, height=300)
-            
-            with tab3:
-                # Statistics
-                col_a, col_b, col_c, col_d = st.columns(4)
-                with col_a:
-                    st.metric("Mean", f"{np.mean(query_embedding):.4f}")
-                with col_b:
-                    st.metric("Std Dev", f"{np.std(query_embedding):.4f}")
-                with col_c:
-                    st.metric("Min", f"{np.min(query_embedding):.4f}")
-                with col_d:
-                    st.metric("Max", f"{np.max(query_embedding):.4f}")
-                
-                st.write("**L2 Norm:**", f"{np.linalg.norm(query_embedding):.4f}")
+            fig, ax = plt.subplots(figsize=(12, 4))
+            ax.bar(range(len(query_embedding)), query_embedding, color='steelblue', alpha=0.7)
+            ax.set_xlabel('Dimension')
+            ax.set_ylabel('Value')
+            ax.set_title(f'Embedding Vector Visualization (64D)')
+            ax.grid(True, alpha=0.3)
+            st.pyplot(fig)
         
-        st.markdown("---")
-        
-        # Recommendations section
-        if recommendations:
-            st.subheader(f"🎼 Top {len(recommendations)} Recommendations")
-            
+        with tab2:
             # Display as dataframe
-            rec_df = pd.DataFrame(recommendations)
-            st.dataframe(
-                rec_df,
-                use_container_width=True,
-                hide_index=True
-            )
+            emb_df = pd.DataFrame({
+                'Dimension': range(len(query_embedding)),
+                'Value': query_embedding
+            })
+            st.dataframe(emb_df, use_container_width=True, height=300)
+        
+        with tab3:
+            # Statistics
+            col_a, col_b, col_c, col_d = st.columns(4)
+            with col_a:
+                st.metric("Mean", f"{np.mean(query_embedding):.4f}")
+            with col_b:
+                st.metric("Std Dev", f"{np.std(query_embedding):.4f}")
+            with col_c:
+                st.metric("Min", f"{np.min(query_embedding):.4f}")
+            with col_d:
+                st.metric("Max", f"{np.max(query_embedding):.4f}")
             
-            # Display detailed cards
-            st.subheader("Detailed Results")
-            for i, rec in enumerate(recommendations, 1):
-                with st.expander(f"#{i} - {rec['Title']} by {rec['Artist']}"):
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.write(f"**Track ID:** {rec['Track ID']}")
-                        st.write(f"**Artist:** {rec['Artist']}")
-                    with col2:
-                        st.write(f"**Genre:** {rec['Genre']}")
-                        st.write(f"**Similarity Score:** {rec['Similarity']}")
-        else:
-            st.warning("No recommendations found.")
+            st.write("**L2 Norm:**", f"{np.linalg.norm(query_embedding):.4f}")
+    
+    st.markdown("---")
+    
+    # Recommendations section
+    if recommendations:
+        st.subheader(f"🎼 Top {len(recommendations)} Recommendations")
+        
+        # Display as dataframe
+        rec_df = pd.DataFrame(recommendations)
+        st.dataframe(
+            rec_df,
+            use_container_width=True,
+            hide_index=True
+        )
+        
+        # Display detailed cards
+        st.subheader("Detailed Results")
+        for i, rec in enumerate(recommendations, 1):
+            with st.expander(f"#{i} - {rec['Title']} by {rec['Artist']}"):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write(f"**Track ID:** {rec['Track ID']}")
+                    st.write(f"**Artist:** {rec['Artist']}")
+                with col2:
+                    st.write(f"**Genre:** {rec['Genre']}")
+                    st.write(f"**Similarity Score:** {rec['Similarity']}")
+    else:
+        st.warning("No recommendations found.")
 else:
     st.info("👆 Please upload an audio file to get started!")
 
